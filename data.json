@@ -11,7 +11,12 @@
     ],
     "stories": [
       { "title": "Колобок", "duration": "4:22", "file": "stories/kolobok.mp3" },
-      { "title": "Курочка-Ряба", "duration": "1:07", "file": "stories/kurochka-ryaba.mp3" },
+      { "title": "Курочка Ряба", "duration": "1:07", "file": "stories/kurochka-ryaba.mp3" },
+      { "title": "Кощей Бессмертный", "duration": "24:03", "file": "stories/koschey.mp3" },
+      { "title": "Морозко", "duration": "07:40", "file": "stories/4morozko.mp3" }, 
+      { "title": "Сивка-бурка", "duration": "16:10", "file": "stories/4sivka-burka.mp3" },
+      { "title": "Петушок-золотой гребешок", "duration": "4:51", "file": "stories/petushok-zolotoy-grebeshok.mp3" },
+      { "title": "Иван-царевич и серый волк", "duration": "17:15", "file": "ivan-carevich-i-seryy-volk.mp3" },
       { "title": "Снегурочка", "duration": "10:53", "file": "stories/snegurochka.mp3" }
     ],
     "categories": [
