@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>KidsCalm</title>
+  <style>
+    * {
+      touch-action: manipulation;
+    }
+
+    :root {
+      --accent-color: #8A2BE2;
+      --text-color: #fff;
+      --background-color: rgba(28, 28, 30, 0.7);
+      --card-background: rgba(28, 28, 30, 0.6);
+      --dark-overlay: rgba(0, 0, 0, 0.4);
+      --border-radius-lg: 20px;
+      --border-radius-md: 16px;
+      --border-radius-sm: 12px;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto;
+      font-weight: 500;
+      background: url('bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text-color);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      width: 100%;
+      padding-bottom: 0;
+      transition: padding-bottom 0.3s ease;
+    }
+
+    body.player-open {
+      padding-bottom: 180px;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--dark-overlay);
+      backdrop-filter: blur(30px);
+      z-index: -1;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background-color: rgba(28, 28, 30, 0.8);
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 2rem;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-container img {
+      height: 38px;
+      width: auto;
+      transform: scale(1);
+      transition: transform 0.2s ease;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #8A2BE2, #B666FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-container img:active {
+      transform: scale(0.95);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 2px;
+      border-radius: var(--border-radius-lg);
+    }
+
+    .tab {
+      border: none;
+      padding: 0.4rem 0.875rem;
+      border-radius: var(--border-radius-md);
+      background-color: transparent;
+      color: var(--text-color);
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    .tab.active {
+      background-color: var(--accent-color);
+      opacity: 1;
+    }
+
+    .container {
+      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      box-sizing: border-box;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    .categories {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      padding: 0.5rem 0;
+      margin: 1rem 0;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .categories::-webkit-scrollbar {
+      display: none;
+    }
+
+    .category {
+      white-space: nowrap;
+      padding: 0.6rem 1.25rem;
+      background-color: var(--card-background);
+      border-radius: var(--border-radius-lg);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-weight: 600;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .category.active {
+      background-color: var(--accent-color);
+      border-color: transparent;
+    }
+
+    .category:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .category:active {
+      transform: scale(0.96);
+    }
+
+    .category.active .category-icon {
+      color: var(--accent-color);
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .category-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background-color: rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .category:hover .category-icon {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: scale(1.1);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    .card {
+      display: flex;
+      align-items: center;
+      background-color: var(--card-background);
+      backdrop-filter: blur(20px);
+      padding: 1rem;
+      border-radius: var(--border-radius-md);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .card:active {
+      transform: scale(0.98);
+    }
+
+    .card-icon {
+      background-color: rgba(255, 255, 255, 0.15);
+      width: 42px;
+      height: 42px;
+      border-radius: var(--border-radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-right: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover .card-icon {
+      transform: scale(1.1) rotate(5deg);
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .card.active .card-icon {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+
+    .card.active {
+      background-color: var(--accent-color);
+      border-color: transparent;
+    }
+
+    .player-controls {
+      display: none;
+      flex-direction: column;
+      background-color: rgba(28, 28, 30, 0.7);
+      backdrop-filter: blur(30px);
+      padding: 0.75rem;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border-top-left-radius: var(--border-radius-md);
+      border-top-right-radius: var(--border-radius-md);
+      box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 0.5rem;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .player-controls.show {
+      display: flex;
+      transform: translateY(0);
+    }
+
+    .player-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.25rem;
+    }
+
+    .minimize-button {
+      background: none;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: all 0.2s ease;
+      margin: -8px -8px 0 0;
+    }
+
+    .minimize-button:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .minimize-button img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .player-title {
+      font-weight: 700;
+      font-size: 0.9375rem;
+      margin-bottom: 0;
+    }
+
+    .player-category {
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+
+    .player-progress {
+      width: 100%;
+      height: 3px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      position: relative;
+      cursor: pointer;
+      margin: 0.25rem 0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: var(--accent-color);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    .player-controls-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin: 0.25rem 0;
+      position: relative;
+      padding: 0 3rem;
+    }
+
+    .timer-container {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .timer-countdown {
+      display: none;
+    }
+
+    .timer-menu {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      right: 0;
+      background-color: rgba(28, 28, 30, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: var(--border-radius-md);
+      padding: 0.5rem;
+      display: none;
+      flex-direction: column;
+      gap: 0.25rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 1001;
+      min-width: 120px;
+    }
+
+    .timer-menu.show {
+      display: flex;
+    }
+
+    .timer-option {
+      padding: 0.5rem 1rem;
+      color: white;
+      background: none;
+      border: none;
+      border-radius: var(--border-radius-sm);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.875rem;
+      white-space: nowrap;
+      text-align: center;
+      width: 100%;
+    }
+
+    .timer-option:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .timer-option:active {
+      transform: scale(0.98);
+    }
+
+    .player-button.side-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .player-button.side-button.left {
+      left: 0;
+    }
+
+    .player-button.side-button.right {
+      right: 0;
+    }
+
+    .player-button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      opacity: 0.9;
+    }
+
+    .player-button.play-pause {
+      background-color: var(--accent-color);
+      width: 42px;
+      height: 42px;
+    }
+
+    .player-button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      opacity: 1;
+    }
+
+    .player-button:active {
+      transform: scale(0.95);
+    }
+
+    .player-button img {
+      width: 20px;
+      height: 20px;
+      filter: brightness(0) invert(1);
+    }
+
+    .player-button.play-pause img {
+      width: 24px;
+      height: 24px;
+      filter: brightness(0) invert(1);
+    }
+
+    .volume-control {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 0.25rem;
+      padding: 0 1rem;
+    }
+
+    .volume-icon {
+      opacity: 0.7;
+      width: 18px;
+      height: 18px;
+    }
+
+    .volume-icon img {
+      width: 100%;
+      height: 100%;
+      filter: brightness(0) invert(1);
+    }
+
+    .volume-slider {
+      flex: 1;
+      height: 3px;
+      -webkit-appearance: none;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      outline: none;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      background-color: white;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .footer-btn {
+      margin-top: 0.25rem;
+      padding: 0.625rem;
+      font-size: 0.875rem;
+    }
+
+    #mainPlayer {
+      display: none;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (min-width: 769px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+      }
+
+      .card {
+        padding: 1.25rem;
+      }
+
+      .categories {
+        margin: 1.5rem 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+        width: 100%;
+        overflow-x: hidden;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.875rem;
+        width: 100%;
+      }
+
+      .card {
+        padding: 0.875rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .card-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 18px;
+      }
+
+      .category {
+        padding: 0.5rem 1rem;
+        font-size: 14px;
+      }
+
+      .mini-player {
+        bottom: 1.5rem;
+        right: 1.5rem;
+      }
+
+      .player-controls {
+        width: 100vw;
+        margin: 0;
+        padding: 1rem;
+        border-radius: var(--border-radius-md);
+        left: 0;
+        right: 0;
+        box-sizing: border-box;
+      }
+
+      .player-button {
+        width: 36px;
+        height: 36px;
+      }
+
+      .player-button.play-pause {
+        width: 44px;
+        height: 44px;
+      }
+
+      .player-button img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .player-button.play-pause img {
+        width: 24px;
+        height: 24px;
+      }
+
+      .footer-btn {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    #nowPlaying {
+      font-weight: 600;
+      opacity: 0.8;
+      font-size: 15px;
+    }
+
+    #mainPlayer {
+      width: 100%;
+      height: 36px;
+      margin: 0;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    #mainPlayer::-webkit-media-controls-panel {
+      background-color: transparent;
+    }
+
+    #mainPlayer::-webkit-media-controls-current-time-display,
+    #mainPlayer::-webkit-media-controls-time-remaining-display {
+      color: white;
+    }
+
+    #mainPlayer::-webkit-media-controls-timeline {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      height: 4px;
+    }
+
+    #mainPlayer::-webkit-media-controls-volume-slider {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      height: 4px;
+    }
+
+    #mainPlayer::-webkit-media-controls-play-button,
+    #mainPlayer::-webkit-media-controls-mute-button {
+      filter: brightness(0) invert(1);
+    }
+
+    #mainPlayer::-webkit-media-controls-play-button:hover,
+    #mainPlayer::-webkit-media-controls-mute-button:hover {
+      opacity: 0.8;
+    }
+
+    .mini-player {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background-color: var(--accent-color);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      z-index: 100;
+    }
+
+    .mini-player.show {
+      display: flex;
+    }
+
+    .mini-player:hover {
+      transform: scale(1.1);
+    }
+
+    .mini-player:active {
+      transform: scale(0.95);
+    }
+
+    .mini-player img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .player-button.active {
+      background-color: var(--accent-color);
+      opacity: 1;
+    }
+
+    .player-button.active img {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="logo.png" alt="KidsCalm">
+      <span class="logo-text">KidsCalm</span>
+    </div>
+    <div class="tabs">
+      <button class="tab active" id="tab-sounds">🎵 Звуки</button>
+      <button class="tab" id="tab-stories">📖 Сказки</button>
+    </div>
+  </header>
+  <div class="container">
+    <div id="sound-section">
+      <div class="categories">
+        <div class="category active">Все звуки</div>
+        <div class="category">Шумы</div>
+        <div class="category">Природа</div>
+        <div class="category">Музыка</div>
+      </div>
+      <div class="grid" id="sound-list"></div>
+    </div>
+    <div id="story-section" class="hidden">
+      <div class="grid" id="story-list"></div>
+    </div>
+  </div>
+  <div class="player-controls" id="playerControls">
+    <div class="player-header">
+      <div>
+        <div class="player-title" id="nowPlaying">Сейчас играет:</div>
+        <div class="player-category" id="currentCategory"></div>
+      </div>
+      <button class="minimize-button" id="minimizeButton">
+        <img src="minimize.svg" alt="Свернуть">
+      </button>
+    </div>
+    <div class="player-progress" id="progressBar">
+      <div class="progress-bar" id="progress"></div>
+    </div>
+    <div class="player-controls-buttons">
+      <button class="player-button side-button left" id="loopButton">
+        <img src="loop.svg" alt="Loop">
+      </button>
+      <button class="player-button" id="prevButton">
+        <img src="prev.svg" alt="Previous">
+      </button>
+      <button class="player-button play-pause" id="playPauseButton">
+        <img src="play.svg" alt="Play">
+      </button>
+      <button class="player-button" id="nextButton">
+        <img src="next.svg" alt="Next">
+      </button>
+      <div class="timer-container">
+        <button class="player-button side-button right" id="sleepTimerBtn">
+          <img src="timer.svg" alt="Timer">
+        </button>
+        <div class="timer-menu" id="timerMenu">
+          <button class="timer-option" data-minutes="0">Отключить</button>
+          <button class="timer-option" data-minutes="5">5 минут</button>
+          <button class="timer-option" data-minutes="10">10 минут</button>
+          <button class="timer-option" data-minutes="15">15 минут</button>
+          <button class="timer-option" data-minutes="30">30 минут</button>
+          <button class="timer-option" data-minutes="60">1 час</button>
+          <button class="timer-option" data-minutes="120">2 часа</button>
+        </div>
+      </div>
+    </div>
+    <div class="volume-control">
+      <div class="volume-icon">
+        <img src="volume-down.svg" alt="Тише">
+      </div>
+      <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+      <div class="volume-icon">
+        <img src="volume-up.svg" alt="Громче">
+      </div>
+    </div>
+    <audio id="mainPlayer"></audio>
+  </div>
+  <div class="mini-player" id="miniPlayer">
+    <img src="play.svg" alt="Play">
+  </div>
+  <script>
+    const tabSounds = document.getElementById("tab-sounds");
+    const tabStories = document.getElementById("tab-stories");
+    const soundSection = document.getElementById("sound-section");
+    const storySection = document.getElementById("story-section");
+    const soundList = document.getElementById("sound-list");
+    const storyList = document.getElementById("story-list");
+    const playerControls = document.getElementById("playerControls");
+    const player = document.getElementById("mainPlayer");
+    const nowPlaying = document.getElementById("nowPlaying");
+
+    const sounds = [
+      { title: "Белый шум", file: "whitenoise.mp3", icon: "🌊", category: "whitenoise" },
+      { title: "Морские волны", file: "ocean_waves.mp3", icon: "🌊", category: "ocean" },
+      { title: "Прибой", file: "priboy.mp3", icon: "🌊", category: "ocean" },
+      { title: "Летний дождь", file: "rain_summer.mp3", icon: "🌧️", category: "rain" },
+      { title: "Гроза", file: "rain_thunder.mp3", icon: "⛈️", category: "rain" },
+      { title: "Дождь по крыше", file: "rain_roof.mp3", icon: "🏠", category: "rain" },
+      { title: "Колыбельная", file: "lullaby.mp3", icon: "🌙", category: "lullaby" },
+      { title: "Лесные птицы", file: "forest_birds.mp3", icon: "🐦", category: "birds" },
+      { title: "Утренние птицы", file: "morning_birds.mp3", icon: "🐦", category: "birds" }
+    ];
+
+    const stories = [
+      { title: "Колобок", duration: "4:22", file: "stories/kolobok.mp3" },
+      { title: "Каша из топора", duration: "2:38", file: "stories/kasha.mp3" },
+      { title: "Теремок", duration: "4:38", file: "stories/teremok.mp3" }
+    ];
+
+    const categories = [
+      { id: "all", name: "Все звуки", icon: "🎵" },
+      { id: "whitenoise", name: "Белый шум", icon: "📻" },
+      { id: "rain", name: "Дождь", icon: "🌧️" },
+      { id: "ocean", name: "Океан", icon: "🌊" },
+      { id: "lullaby", name: "Колыбельная", icon: "🌙" },
+      { id: "birds", name: "Птицы", icon: "🐦" }
+    ];
+
+    let currentCategory = "all";
+    let isPlaying = false;
+    let currentSound = null;
+    let currentStory = null;
+    let isLoopEnabled = true;
+
+    // Функция для отображения звуков выбранной категории
+    function filterSounds(categoryId) {
+      currentCategory = categoryId;
+      
+      // Обновляем активную категорию
+      document.querySelectorAll('.category').forEach(cat => {
+        cat.classList.remove('active');
+        if (cat.dataset.id === categoryId) {
+          cat.classList.add('active');
+        }
+      });
+
+      // Очищаем текущий список
+      soundList.innerHTML = '';
+
+      // Фильтруем и отображаем звуки
+      const filteredSounds = categoryId === "all" 
+        ? sounds 
+        : sounds.filter(s => s.category === categoryId);
+
+      filteredSounds.forEach(s => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `<div style='display:flex; gap: 1rem; align-items:center;'><span class='card-icon'>${s.icon}</span><span>${s.title}</span></div>`;
+        div.addEventListener("click", () => playAudio(s.title, `sounds/${s.file}`, s.category));
+        soundList.appendChild(div);
+      });
+    }
+
+    // Создаем категории
+    const categoriesContainer = document.querySelector('.categories');
+    categoriesContainer.innerHTML = ''; // Очищаем существующие категории
+
+    categories.forEach(category => {
+      const div = document.createElement("div");
+      div.className = "category";
+      div.dataset.id = category.id;
+      if (category.id === "all") {
+        div.classList.add("active");
+      }
+      div.innerHTML = `<span class="category-icon">${category.icon}</span>${category.name}`;
+      div.addEventListener("click", () => filterSounds(category.id));
+      categoriesContainer.appendChild(div);
+    });
+
+    // Инициализируем отображение всех звуков
+    filterSounds("all");
+
+    tabSounds.addEventListener("click", () => {
+      tabSounds.classList.add("active");
+      tabStories.classList.remove("active");
+      soundSection.classList.remove("hidden");
+      storySection.classList.add("hidden");
+    });
+
+    tabStories.addEventListener("click", () => {
+      tabSounds.classList.remove("active");
+      tabStories.classList.add("active");
+      soundSection.classList.add("hidden");
+      storySection.classList.remove("hidden");
+    });
+
+    function updatePlayPauseButton() {
+      const button = document.getElementById('playPauseButton');
+      const img = button.querySelector('img');
+      if (isPlaying) {
+        img.src = 'pause.svg';
+        img.alt = 'Pause';
+      } else {
+        img.src = 'play.svg';
+        img.alt = 'Play';
+      }
+    }
+
+    function updateActiveCard() {
+      // Убираем активный класс со всех карточек
+      document.querySelectorAll('.card').forEach(card => {
+        card.classList.remove('active');
+      });
+
+      // Находим и подсвечиваем активную карточку
+      if (currentSound) {
+        const activeCard = Array.from(document.querySelectorAll('.card')).find(
+          card => card.querySelector('span:last-child').textContent === currentSound.title
+        );
+        if (activeCard) activeCard.classList.add('active');
+      } else if (currentStory) {
+        const activeCard = Array.from(document.querySelectorAll('.card')).find(
+          card => card.querySelector('span:first-child').textContent === currentStory.title
+        );
+        if (activeCard) activeCard.classList.add('active');
+      }
+    }
+
+    function updateMiniPlayer() {
+      const miniPlayer = document.getElementById('miniPlayer');
+      const img = miniPlayer.querySelector('img');
+      img.src = isPlaying ? 'pause.svg' : 'play.svg';
+      img.alt = isPlaying ? 'Pause' : 'Play';
+    }
+
+    function togglePlayPause() {
+      if (player.src) {
+        if (isPlaying) {
+          player.pause();
+        } else {
+          player.play();
+        }
+        isPlaying = !isPlaying;
+        updatePlayPauseButton();
+        updateMiniPlayer();
+      }
+    }
+
+    function showPlayer() {
+      playerControls.classList.add("show");
+      document.body.classList.add("player-open");
+      document.getElementById('miniPlayer').classList.remove("show");
+    }
+
+    function hidePlayer() {
+      playerControls.classList.remove("show");
+      document.body.classList.remove("player-open");
+      document.getElementById('miniPlayer').classList.add("show");
+    }
+
+    function playAudio(title, path, category = '') {
+      player.src = path;
+      const isStory = path.includes('stories/');
+      
+      if (isStory) {
+        currentStory = { title, file: path };
+        currentSound = null;
+        player.loop = false;
+      } else {
+        currentSound = { title, file: path, category };
+        currentStory = null;
+        player.loop = true;
+      }
+      
+      document.getElementById('nowPlaying').textContent = title;
+      document.getElementById('currentCategory').textContent = category || 'Сказка';
+      showPlayer();
+      player.volume = volumeSlider.value;
+      player.play();
+      isPlaying = true;
+      updatePlayPauseButton();
+      updateMiniPlayer();
+      updateActiveCard();
+      updateMediaSessionMetadata(title, category);
+    }
+
+    function playNext() {
+      if (currentStory) {
+        const currentIndex = stories.findIndex(s => s.title === currentStory.title);
+        if (currentIndex < stories.length - 1) {
+          const nextStory = stories[currentIndex + 1];
+          playAudio(nextStory.title, nextStory.file);
+        }
+      } else if (currentSound) {
+        const currentSounds = sounds.filter(s => 
+          currentCategory === 'all' ? true : s.category === currentCategory
+        );
+        const currentIndex = currentSounds.findIndex(s => s.title === currentSound.title);
+        if (currentIndex < currentSounds.length - 1) {
+          const nextSound = currentSounds[currentIndex + 1];
+          playAudio(nextSound.title, `sounds/${nextSound.file}`, categories.find(c => c.id === nextSound.category)?.name);
+        }
+      }
+    }
+
+    function playPrevious() {
+      if (currentStory) {
+        const currentIndex = stories.findIndex(s => s.title === currentStory.title);
+        if (currentIndex > 0) {
+          const prevStory = stories[currentIndex - 1];
+          playAudio(prevStory.title, prevStory.file);
+        }
+      } else if (currentSound) {
+        const currentSounds = sounds.filter(s => 
+          currentCategory === 'all' ? true : s.category === currentCategory
+        );
+        const currentIndex = currentSounds.findIndex(s => s.title === currentSound.title);
+        if (currentIndex > 0) {
+          const prevSound = currentSounds[currentIndex - 1];
+          playAudio(prevSound.title, `sounds/${prevSound.file}`, categories.find(c => c.id === prevSound.category)?.name);
+        }
+      }
+    }
+
+    // Инициализация плеера
+    const volumeSlider = document.getElementById('volumeSlider');
+    const progressBar = document.getElementById('progressBar');
+    const progress = document.getElementById('progress');
+
+    document.getElementById('playPauseButton').addEventListener('click', togglePlayPause);
+    document.getElementById('nextButton').addEventListener('click', playNext);
+    document.getElementById('prevButton').addEventListener('click', playPrevious);
+
+    volumeSlider.addEventListener('input', () => {
+      try {
+        // Пытаемся использовать системное управление звуком
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.setVolume(volumeSlider.value);
+        }
+      } catch (e) {
+        console.log('System volume control not available');
+      }
+      player.volume = volumeSlider.value;
+    });
+
+    // Добавляем управление медиа сессией
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.setActionHandler('play', () => {
+        player.play();
+        isPlaying = true;
+        updatePlayPauseButton();
+        updateMiniPlayer();
+      });
+
+      navigator.mediaSession.setActionHandler('pause', () => {
+        player.pause();
+        isPlaying = false;
+        updatePlayPauseButton();
+        updateMiniPlayer();
+      });
+
+      navigator.mediaSession.setActionHandler('previoustrack', playPrevious);
+      navigator.mediaSession.setActionHandler('nexttrack', playNext);
+    }
+
+    // Обновляем метаданные для системного медиа плеера
+    function updateMediaSessionMetadata(title, category) {
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: title,
+          artist: category || 'KidsCalm',
+          artwork: [
+            { src: 'logo.png', sizes: '96x96', type: 'image/png' }
+          ]
+        });
+      }
+    }
+
+    player.addEventListener('timeupdate', () => {
+      if (player.duration) {
+        const percentage = (player.currentTime / player.duration) * 100;
+        progress.style.width = `${percentage}%`;
+      }
+    });
+
+    progressBar.addEventListener('click', (e) => {
+      const rect = progressBar.getBoundingClientRect();
+      const pos = (e.clientX - rect.left) / rect.width;
+      player.currentTime = pos * player.duration;
+    });
+
+    player.addEventListener('ended', () => {
+      if (currentStory) {
+        playNext();
+      } else {
+        player.currentTime = 0;
+        player.play();
+      }
+    });
+
+    stories.forEach(story => {
+      const div = document.createElement("div");
+      div.className = "card";
+      div.innerHTML = `<div style='display:flex; justify-content:space-between; width:100%;'><span>${story.title}</span><span style='opacity: 0.6;'>${story.duration}</span></div>`;
+      div.addEventListener("click", () => playAudio(story.title, story.file));
+      storyList.appendChild(div);
+    });
+
+    function toggleLoop() {
+      isLoopEnabled = !isLoopEnabled;
+      player.loop = isLoopEnabled;
+      document.getElementById('loopButton').classList.toggle('active', isLoopEnabled);
+    }
+
+    document.getElementById('loopButton').addEventListener('click', toggleLoop);
+    document.getElementById('loopButton').classList.add('active');
+
+    // Обработка таймера сна
+    const timerMenu = document.getElementById('timerMenu');
+    const timerBtn = document.getElementById('sleepTimerBtn');
+    let activeTimer = null;
+    let countdownInterval = null;
+    let timerEndTime = null;
+    let originalVolume = player.volume;
+    let isTimerMenuOpen = false;
+
+    function clearSleepTimer() {
+      if (activeTimer) {
+        clearTimeout(activeTimer);
+        activeTimer = null;
+      }
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+      timerEndTime = null;
+      document.getElementById('sleepTimerBtn').classList.remove('active');
+      player.volume = originalVolume;
+    }
+
+    function toggleTimerMenu(e) {
+      if (e) {
+        e.stopPropagation();
+      }
+      isTimerMenuOpen = !isTimerMenuOpen;
+      if (isTimerMenuOpen) {
+        timerMenu.classList.add('show');
+      } else {
+        timerMenu.classList.remove('show');
+      }
+    }
+
+    timerBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleTimerMenu();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!timerMenu.contains(e.target) && e.target !== timerBtn) {
+        isTimerMenuOpen = false;
+        timerMenu.classList.remove('show');
+      }
+    });
+
+    document.querySelectorAll('.timer-option').forEach(option => {
+      option.addEventListener('click', () => {
+        const minutes = parseInt(option.dataset.minutes);
+        
+        // Сначала очищаем предыдущий таймер
+        clearSleepTimer();
+        
+        if (minutes > 0) {
+          // Сохраняем текущую громкость
+          originalVolume = player.volume;
+          
+          document.getElementById('sleepTimerBtn').classList.add('active');
+          const fadeTime = 5000; // 5 секунд на затухание
+          
+          // Устанавливаем время окончания таймера
+          timerEndTime = Date.now() + minutes * 60000;
+          
+          activeTimer = setTimeout(() => {
+            const steps = 50;
+            const stepTime = fadeTime / steps;
+            let currentStep = 0;
+            
+            const fadeInterval = setInterval(() => {
+              currentStep++;
+              const newVolume = originalVolume * (1 - currentStep / steps);
+              
+              if (currentStep >= steps) {
+                player.volume = 0;
+                player.pause();
+                clearInterval(fadeInterval);
+                clearSleepTimer();
+              } else {
+                player.volume = newVolume;
+              }
+            }, stepTime);
+          }, minutes * 60000 - fadeTime);
+        }
+
+        toggleTimerMenu(); // Используем общую функцию для закрытия меню
+      });
+    });
+
+    document.getElementById("minimizeButton").addEventListener("click", hidePlayer);
+
+    document.getElementById("miniPlayer").addEventListener("click", showPlayer);
+  </script>
+</body>
+</html>

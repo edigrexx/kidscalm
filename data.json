@@ -1,0 +1,25 @@
+{
+    "sounds": [
+      { "title": "Белый шум", "file": "whitenoise.mp3", "icon": "🌊", "categoryId": "whitenoise" },
+      { "title": "Морские волны", "file": "ocean_waves.mp3", "icon": "🌊", "categoryId": "ocean" },
+      { "title": "Летний дождь", "file": "rain_summer.mp3", "icon": "🌧️", "categoryId": "rain" },
+      { "title": "Гроза", "file": "rain_thunder.mp3", "icon": "⛈️", "categoryId": "rain" },
+      { "title": "Дождь по крыше", "file": "rain_roof.mp3", "icon": "🏠", "categoryId": "rain" },
+      { "title": "Колыбельная", "file": "lullaby.mp3", "icon": "🌙", "categoryId": "lullaby" },
+      { "title": "Лесные птицы", "file": "forest_birds.mp3", "icon": "🐦", "categoryId": "birds" },
+      { "title": "Утренние птицы", "file": "morning_birds.mp3", "icon": "🐦", "categoryId": "birds" }
+    ],
+    "stories": [
+      { "title": "Колобок", "duration": "4:22", "file": "stories/kolobok.mp3" },
+      { "title": "Курочка-Ряба", "duration": "1:07", "file": "stories/kurochka-ryaba.mp3" },
+      { "title": "Снегурочка", "duration": "10:53", "file": "stories/snegurochka.mp3" }
+    ],
+    "categories": [
+      { "id": "all", "name": "Все звуки", "icon": "🎵" },
+      { "id": "whitenoise", "name": "Шумы", "icon": "📻" },
+      { "id": "rain", "name": "Дождь", "icon": "🌧️" },
+      { "id": "ocean", "name": "Океан", "icon": "🌊" },
+      { "id": "birds", "name": "Птицы", "icon": "🐦" },
+      { "id": "lullaby", "name": "Колыбельные", "icon": "🌙" }
+    ]
+  }

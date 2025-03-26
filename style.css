@@ -1,0 +1,744 @@
+/* --- Базовые стили и переменные --- */
+* {
+    touch-action: manipulation;
+    box-sizing: border-box;
+  }
+  
+  :root {
+    --accent-color: #8A2BE2;
+    --text-color: #fff;
+    --background-color: rgba(28, 28, 30, 0.7);
+    --card-background: rgba(28, 28, 30, 0.6);
+    --dark-overlay: rgba(0, 0, 0, 0.4);
+    --border-radius-lg: 20px;
+    --border-radius-md: 16px;
+    --border-radius-sm: 12px;
+  }
+  
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    font-weight: 500;
+    background: url('bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: var(--text-color);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    width: 100%;
+    padding-bottom: 0;
+    transition: padding-bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  body.player-open {
+    padding-bottom: 180px; /* Оставляем место под плеер */
+  }
+  
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--dark-overlay);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    z-index: -1;
+  }
+  
+  /* --- Шапка --- */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: rgba(28, 28, 30, 0.8);
+    backdrop-filter: blur(20px);
+     -webkit-backdrop-filter: blur(20px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 1rem;
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+  
+  .logo-container img {
+    height: 38px;
+    width: auto;
+    transform: scale(1);
+    transition: transform 0.2s ease;
+  }
+  
+  .logo-text {
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #8A2BE2, #B666FF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+  }
+  
+  .logo-container img:active {
+    transform: scale(0.95);
+  }
+  
+  .tabs {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 3px;
+    border-radius: var(--border-radius-lg);
+    flex-shrink: 1;
+    min-width: 0;
+  }
+  
+  .tab {
+    border: none;
+    padding: 0.4rem 0.875rem;
+    border-radius: var(--border-radius-md);
+    background-color: transparent;
+    color: var(--text-color);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 13px;
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+  
+  .tab.active {
+    background-color: var(--accent-color);
+    opacity: 1;
+    box-shadow: 0 2px 8px rgba(138, 43, 226, 0.3);
+  }
+   .tab:not(.active):hover {
+       opacity: 1;
+       background-color: rgba(255, 255, 255, 0.1);
+   }
+  
+  /* --- Основной контейнер и секции --- */
+  .container {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative; /* Для позиционирования скрытых секций */
+  }
+  
+  /* Стили для плавной смены вкладок */
+  .tab-section {
+      opacity: 1;
+      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+      visibility: visible;
+  }
+  
+  .tab-section:not(.active-section) {
+      opacity: 0;
+      visibility: hidden;
+      position: absolute;
+      top: 0;
+      left: 1rem;
+      right: 1rem;
+      pointer-events: none;
+  }
+  
+  /* --- Категории --- */
+  .categories {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding: 0.5rem 0;
+    margin: 1rem 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .categories::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .category {
+    white-space: nowrap;
+    padding: 0.6rem 1.25rem;
+    background-color: var(--card-background);
+    border-radius: var(--border-radius-lg);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .category.active {
+    background-color: var(--accent-color);
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 2px 8px rgba(138, 43, 226, 0.3);
+  }
+  
+  .category:not(.active):hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .category:active {
+    transform: scale(0.96);
+     transition-duration: 0.1s;
+  }
+  
+  .category.active .category-icon {
+    color: var(--accent-color);
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .category-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
+  
+  .category:hover .category-icon {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+  }
+  
+  /* --- Сетка и карточки --- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  
+  .card {
+    display: flex;
+    align-items: center;
+    background-color: var(--card-background);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 1rem;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+  }
+  
+   .card:not(.active):hover {
+      transform: translateY(-3px);
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+   }
+  
+   .card:active {
+      transform: scale(0.97);
+      transition-duration: 0.1s;
+   }
+  
+  .card-icon {
+    background-color: rgba(255, 255, 255, 0.15);
+    width: 42px;
+    height: 42px;
+    border-radius: var(--border-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-right: 1rem;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+  
+  .card:hover .card-icon {
+    transform: scale(1.1) rotate(5deg);
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  
+  .card.active {
+    background-color: var(--accent-color);
+    border-color: transparent;
+    color: white;
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+  }
+  
+  .card.active .card-icon {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--accent-color);
+    transform: scale(1.05);
+  }
+  
+  .card-content {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      min-width: 0;
+  }
+  .card-title {
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }
+  .card-duration {
+      font-size: 0.8em;
+      opacity: 0.7;
+      margin-top: 2px;
+  }
+  
+  /* --- Плеер --- */
+  .player-controls {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(28, 28, 30, 0.8);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    padding: 0.75rem;
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom)); /* Учет нижнего отступа на iOS */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top-left-radius: var(--border-radius-md);
+    border-top-right-radius: var(--border-radius-md);
+    box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.25);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 0.5rem;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: hidden;
+  }
+  
+  .player-controls.show {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+  }
+  
+  .player-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+  }
+  
+  .minimize-button {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+    margin: -8px -8px 0 0;
+  }
+  
+  .minimize-button:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+   .minimize-button:active {
+       transform: scale(0.95);
+   }
+  
+  .minimize-button img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+  }
+  
+  .player-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 2px;
+     white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: calc(100vw - 100px);
+  }
+  
+  .player-category {
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+  
+  /* --- Элементы управления плеером --- */
+  .player-progress {
+    width: 100%;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+    margin: 0.5rem 0;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background-color: var(--accent-color);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s linear;
+    position: relative;
+  }
+   .progress-bar::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      width: 12px;
+      height: 12px;
+      background-color: white;
+      border-radius: 50%;
+      transform: translate(50%, -50%) scale(0);
+      transition: transform 0.2s ease;
+   }
+   .player-progress:hover .progress-bar::after {
+       transform: translate(50%, -50%) scale(1);
+   }
+  
+  .player-controls-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 0.25rem 0;
+    position: relative;
+     padding: 0 3rem;
+  }
+  
+  .player-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease, background-color 0.1s ease;
+    opacity: 0.8;
+    flex-shrink: 0;
+  }
+  
+  .player-button img {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+  }
+  
+  .player-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    opacity: 1;
+  }
+  
+  .player-button:active {
+    transform: scale(0.92);
+    background-color: rgba(255, 255, 255, 0.15);
+    transition-duration: 0.1s;
+  }
+  
+  .player-button.play-pause {
+    background-color: var(--accent-color);
+    width: 50px;
+    height: 50px;
+    opacity: 1;
+    box-shadow: 0 2px 10px rgba(138, 43, 226, 0.4);
+  }
+  
+  .player-button.play-pause img {
+    width: 26px;
+    height: 26px;
+  }
+  
+  .player-button.play-pause:active {
+      transform: scale(0.92);
+      background-color: #7a1cc0;
+  }
+  
+  .player-button.side-button {
+    /* Общие стили для боковых кнопок (размер, вид), но без position: absolute */
+    width: 36px;
+    height: 36px;
+    opacity: 0.7;
+  }
+   .player-button.side-button img {
+      width: 18px;
+      height: 18px;
+   }
+  
+  /* Позиционирование левой боковой кнопки */
+  .player-button.side-button.left {
+    position: absolute;
+    top: 50%;
+    left: 0.5rem;
+    transform: translateY(-50%);
+  }
+  
+  /* Стиль для активных боковых кнопок (Loop, Timer) */
+  .player-button.active {
+    background-color: var(--accent-color);
+    opacity: 1;
+  }
+   .player-button.active:hover {
+       background-color: #7a1cc0;
+   }
+   .player-button.active:active {
+      /* Применяем transform только если кнопка позиционирована абсолютно */
+      /* Для кнопки таймера (внутри контейнера) transform при active обрабатывается общим правилом .player-button:active */
+       background-color: #6b17a5;
+   }
+   /* Корректируем :active для абсолютно позиционированных кнопок */
+   .player-button.side-button.left:active,
+   .timer-container > .player-button.side-button:active {
+       transform: translateY(-50%) scale(0.92); /* Сохраняем translateY */
+   }
+  
+  
+  /* --- Таймер сна --- */
+  .timer-container {
+    position: absolute; /* Позиционируем контейнер */
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    z-index: 1001;
+  }
+  
+  .timer-menu {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    right: 0;
+    background-color: rgba(40, 40, 42, 0.95);
+    backdrop-filter: blur(15px);
+     -webkit-backdrop-filter: blur(15px);
+    border-radius: var(--border-radius-md);
+    padding: 0.5rem;
+    display: none;
+    flex-direction: column;
+    gap: 0.25rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    z-index: 1002; /* Выше контейнера */
+    min-width: 140px;
+  }
+  
+  .timer-menu.show {
+    display: flex;
+    animation: fade-in-up 0.2s ease-out;
+  }
+  
+  @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .timer-option {
+    padding: 0.6rem 1rem;
+    color: white;
+    background: none;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .timer-option:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .timer-option:active {
+    transform: scale(0.98);
+     background-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  /* --- Громкость --- */
+  .volume-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    padding: 0 1rem;
+  }
+  
+  .volume-icon {
+    opacity: 0.6;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+  
+  .volume-icon img {
+    width: 100%;
+    height: 100%;
+    filter: brightness(0) invert(1);
+  }
+  
+  .volume-slider {
+    flex-grow: 1;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  
+  .volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background-color: white;
+    border-radius: 50%;
+    cursor: pointer;
+     transition: transform 0.1s ease;
+  }
+  .volume-slider::-webkit-slider-thumb:active {
+       transform: scale(1.2);
+  }
+  
+  .volume-slider::-moz-range-thumb {
+     width: 14px;
+     height: 14px;
+     background-color: white;
+     border-radius: 50%;
+     cursor: pointer;
+     border: none;
+     transition: transform 0.1s ease;
+  }
+   .volume-slider::-moz-range-thumb:active {
+       transform: scale(1.2);
+   }
+  
+  /* --- Скрытый нативный плеер --- */
+  #mainPlayer {
+    display: none;
+  }
+  
+  /* --- Мини-плеер --- */
+  .mini-player {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background-color: var(--accent-color);
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      z-index: 999;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+      visibility: hidden;
+  }
+  
+  .mini-player.show {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+      visibility: visible;
+  }
+  
+   .mini-player:hover {
+       transform: scale(1.1);
+   }
+  .mini-player:active {
+      transform: scale(0.95);
+      transition-duration: 0.1s;
+  }
+  
+  .mini-player img {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
+  }
+  
+  /* --- Медиа-запросы --- */
+   @media (max-width: 768px) {
+      body.player-open {
+          /* Динамически через JS? Или фиксировано? Пока оставим 180px */
+      }
+      .container { padding: 0.75rem; }
+      .grid { gap: 0.75rem; margin: 1rem 0; }
+      .card { padding: 0.75rem; }
+      .card-icon { width: 38px; height: 38px; font-size: 18px; margin-right: 0.75rem;}
+      .category { padding: 0.5rem 1rem; font-size: 14px;}
+      .player-controls { padding: 0.5rem; padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)); border-radius: var(--border-radius-md); gap: 0.3rem; }
+      .player-title { font-size: 0.9rem; }
+      .player-category { font-size: 0.75rem; }
+      .player-progress { margin: 0.3rem 0; }
+      .player-controls-buttons { gap: 0.5rem; padding: 0 2.5rem; }
+      .player-button { width: 36px; height: 36px; }
+      .player-button img { width: 18px; height: 18px; }
+      .player-button.play-pause { width: 44px; height: 44px; }
+      .player-button.play-pause img { width: 22px; height: 22px; }
+      .player-button.side-button { width: 32px; height: 32px; }
+      .player-button.side-button img { width: 16px; height: 16px; }
+      /* Позиционирование боковых кнопок на мобильных */
+       .player-button.side-button.left { left: 0.25rem; }
+       .timer-container { right: 0.25rem; }
+  
+      .volume-control { padding: 0 0.5rem; gap: 0.5rem; margin-top: 0.3rem;}
+      .timer-menu { min-width: 120px; }
+      .timer-option { padding: 0.5rem 0.75rem; }
+      .mini-player { width: 50px; height: 50px; bottom: 1rem; right: 1rem;}
+      .mini-player img { width: 24px; height: 24px;}
+   }
+  
+  @media (max-width: 480px) {
+    header { gap: 0.5rem; padding: 0.5rem 0.75rem;}
+    .logo-container img { height: 34px; }
+    .logo-text { font-size: 18px; }
+    .tabs { gap: 0.25rem; padding: 2px; }
+    .tab { padding: 0.3rem 0.6rem; font-size: 12px; gap: 0.25rem;}
+    .grid { grid-template-columns: 1fr; } /* Одна колонка */
+     .categories { margin: 0.75rem 0;}
+     .category { padding: 0.5rem 0.8rem; font-size: 13px;}
+      .card { padding: 0.75rem; }
+      .card-title { font-size: 0.95rem; }
+       body.player-open { padding-bottom: 160px; }
+  }
+  
+  /* Utility class (можно удалить, если не используется явно в JS) */
+  .hidden {
+    display: none;
+  }
