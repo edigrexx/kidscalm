@@ -13,6 +13,7 @@
   --border-radius-lg: 20px;
   --border-radius-md: 16px;
   --border-radius-sm: 12px;
+  --favorite-star-color: #FFD700; /* Цвет активной звезды */
 }
 
 body {
@@ -101,7 +102,15 @@ header {
   border-radius: var(--border-radius-lg);
   flex-shrink: 1;
   min-width: 0;
+  /* Добавим поддержку скролла, если вкладок станет много */
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
 }
+.tabs::-webkit-scrollbar { /* WebKit */
+    display: none;
+}
+
 
 .tab {
   border: none;
@@ -118,6 +127,7 @@ header {
   font-size: 13px;
   opacity: 0.7;
   white-space: nowrap;
+  flex-shrink: 0; /* Чтобы вкладки не сжимались */
 }
 
 .tab.active {
@@ -245,6 +255,7 @@ header {
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
+  position: relative; /* Для позиционирования кнопки избранного */
 }
 
  .card:not(.active):hover {
@@ -308,6 +319,76 @@ header {
     opacity: 0.7;
     margin-top: 2px;
 }
+
+/* --- ИЗМЕНЕНИЕ: Стили кнопки "Избранное" на карточке --- */
+.favorite-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.3);
+    border: none;
+    /* color: убран, управляется в ::before */
+    border-radius: 50%;
+    width: 30px; /* Размер кнопки */
+    height: 30px;
+    cursor: pointer;
+    display: flex; /* Для центрирования ::before */
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    opacity: 0.8; /* Прозрачность кнопки по умолчанию */
+    z-index: 5;
+    padding: 0;
+    font-size: 18px; /* Базовый размер для звезды в ::before */
+    line-height: 1;
+    overflow: hidden; /* Скрыть любое случайное содержимое */
+}
+
+/* Стили для самой звезды через псевдоэлемент */
+.favorite-button::before {
+    content: '☆'; /* НЕАКТИВНАЯ ЗВЕЗДА (КОНТУР) */
+    color: rgba(255, 255, 255, 0.7); /* Цвет неактивной звезды */
+    transition: color 0.2s ease, content 0.1s step-end; /* Плавный цвет, мгновенная смена символа */
+}
+
+/* Поведение при наведении на КАРТОЧКУ */
+.card:hover .favorite-button {
+    opacity: 1; /* Показать кнопку полностью */
+}
+.card:hover .favorite-button::before {
+     color: rgba(255, 255, 255, 0.9); /* Сделать звезду чуть ярче */
+}
+
+/* Поведение при наведении на саму КНОПКУ */
+.favorite-button:hover {
+    background: rgba(0,0,0,0.5); /* Фон кнопки при наведении */
+    transform: scale(1.1); /* Увеличить кнопку */
+}
+.favorite-button:hover::before {
+     color: white; /* Сделать звезду белой при наведении на кнопку */
+}
+
+/* Эффект нажатия */
+ .favorite-button:active {
+     transform: scale(0.95);
+ }
+
+/* --- Стили для АКТИВНОЙ кнопки (трек в избранном) --- */
+.favorite-button.is-favorite {
+    background: rgba(0,0,0,0.4); /* Немного другой фон для активной */
+    opacity: 1; /* Полностью непрозрачна */
+}
+.favorite-button.is-favorite::before {
+    content: '⭐'; /* АКТИВНАЯ ЗВЕЗДА (ЗАЛИТАЯ) */
+    color: var(--favorite-star-color); /* Используем переменную для золотого цвета */
+}
+
+/* Поведение активной кнопки при наведении */
+.favorite-button.is-favorite:hover::before {
+     color: #ffec80; /* Сделать активную звезду чуть светлее при наведении */
+}
+/* --- Конец стилей кнопки "Избранное" --- */
+
 
 /* --- Плеер --- */
 .player-controls {
@@ -701,8 +782,7 @@ header {
 /* --- Медиа-запросы --- */
  @media (max-width: 768px) {
     body.player-open {
-        /* Может потребоваться динамический расчет высоты плеера */
-        /* padding-bottom: 180px; */
+        /* padding-bottom: 180px; */ /* Динамический расчет может быть лучше */
     }
     .container { padding: 0.75rem; }
     .grid { gap: 0.75rem; margin: 1rem 0; }
@@ -729,6 +809,14 @@ header {
     .timer-option { padding: 0.5rem 0.75rem; }
     .mini-player { width: 50px; height: 50px; bottom: 1rem; right: 1rem;}
     .mini-player img { width: 24px; height: 24px;}
+    /* Уменьшим кнопку избранного на мобильных */
+    .favorite-button {
+        top: 5px;
+        right: 5px;
+        width: 28px; /* Чуть меньше на планшетах */
+        height: 28px;
+        font-size: 16px;
+    }
  }
 
 @media (max-width: 480px) {
@@ -743,6 +831,14 @@ header {
     .card { padding: 0.75rem; }
     .card-title { font-size: 0.95rem; }
      body.player-open { padding-bottom: 160px; } /* Возможно, стоит уменьшить */
+     /* Еще меньше кнопка избранного */
+     .favorite-button {
+         top: 6px;
+         right: 6px;
+         width: 26px; /* Еще меньше на телефонах */
+         height: 26px;
+         font-size: 14px;
+     }
 }
 
 /* Utility class (можно удалить, если не используется явно в JS) */
