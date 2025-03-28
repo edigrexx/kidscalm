@@ -1,30 +1,31 @@
 {
-    "sounds": [
-      { "title": "Белый шум", "file": "whitenoise.mp3", "icon": "🌊", "categoryId": "whitenoise" },
-      { "title": "Морские волны", "file": "ocean_waves.mp3", "icon": "🌊", "categoryId": "ocean" },
-      { "title": "Летний дождь", "file": "rain_summer.mp3", "icon": "🌧️", "categoryId": "rain" },
-      { "title": "Гроза", "file": "rain_thunder.mp3", "icon": "⛈️", "categoryId": "rain" },
-      { "title": "Дождь по крыше", "file": "rain_roof.mp3", "icon": "🏠", "categoryId": "rain" },
-      { "title": "Колыбельная", "file": "lullaby.mp3", "icon": "🌙", "categoryId": "lullaby" },
-      { "title": "Лесные птицы", "file": "forest_birds.mp3", "icon": "🐦", "categoryId": "birds" },
-      { "title": "Утренние птицы", "file": "morning_birds.mp3", "icon": "🐦", "categoryId": "birds" }
-    ],
-    "stories": [
-      { "title": "Колобок", "duration": "4:22", "file": "stories/kolobok.mp3" },
-      { "title": "Курочка Ряба", "duration": "1:07", "file": "stories/kurochka-ryaba.mp3" },
-      { "title": "Кощей Бессмертный", "duration": "24:03", "file": "stories/koschey.mp3" },
-      { "title": "Морозко", "duration": "07:40", "file": "stories/4morozko.mp3" }, 
-      { "title": "Сивка-бурка", "duration": "16:10", "file": "stories/4sivka-burka.mp3" },
-      { "title": "Петушок-золотой гребешок", "duration": "4:51", "file": "stories/petushok-zolotoy-grebeshok.mp3" },
-      { "title": "Иван-царевич и серый волк", "duration": "17:15", "file": "ivan-carevich-i-seryy-volk.mp3" },
-      { "title": "Снегурочка", "duration": "10:53", "file": "stories/snegurochka.mp3" }
-    ],
-    "categories": [
-      { "id": "all", "name": "Все звуки", "icon": "🎵" },
-      { "id": "whitenoise", "name": "Шумы", "icon": "📻" },
-      { "id": "rain", "name": "Дождь", "icon": "🌧️" },
-      { "id": "ocean", "name": "Океан", "icon": "🌊" },
-      { "id": "birds", "name": "Птицы", "icon": "🐦" },
-      { "id": "lullaby", "name": "Колыбельные", "icon": "🌙" }
-    ]
-  }
+  "sounds": [
+    { "title": "Белый шум", "file": "whitenoise.mp3", "icon": "🌊", "categoryId": "whitenoise" },
+    { "title": "Морские волны", "file": "ocean_waves.mp3", "icon": "🌊", "categoryId": "ocean" },
+    { "title": "Летний дождь", "file": "rain_summer.mp3", "icon": "🌧️", "categoryId": "rain" },
+    { "title": "Гроза", "file": "rain_thunder.mp3", "icon": "⛈️", "categoryId": "rain" },
+    { "title": "Дождь по крыше", "file": "rain_roof.mp3", "icon": "🏠", "categoryId": "rain" },
+    { "title": "Колыбельная", "file": "lullaby.mp3", "icon": "🌙", "categoryId": "lullaby" },
+    { "title": "Лесные птицы", "file": "forest_birds.mp3", "icon": "🐦", "categoryId": "birds" },
+    { "title": "Утренние птицы", "file": "morning_birds.mp3", "icon": "🐦", "categoryId": "birds" }
+  ],
+  "stories": [
+    { "title": "Колобок", "file": "stories/kolobok.mp3" },
+    { "title": "Курочка Ряба", "file": "stories/kurochka-ryaba.mp3" },
+    { "title": "Кощей Бессмертный", "file": "stories/koschey.mp3" },
+    { "title": "Морозко", "file": "stories/4morozko.mp3" },
+    { "title": "Сивка-бурка", "file": "stories/4sivka-burka.mp3" },
+    { "title": "Петушок-золотой гребешок", "file": "stories/petushok-zolotoy-grebeshok.mp3" },
+    { "title": "Иван-царевич и серый волк", "file": "ivan-carevich-i-seryy-volk.mp3" },
+    { "title": "Маша и медведь", "file": "masha-i-medved.mp3" },
+    { "title": "Снегурочка", "file": "stories/snegurochka.mp3" }
+  ],
+  "categories": [
+    { "id": "all", "name": "Все звуки", "icon": "🎵" },
+    { "id": "whitenoise", "name": "Шумы", "icon": "📻" },
+    { "id": "rain", "name": "Дождь", "icon": "🌧️" },
+    { "id": "ocean", "name": "Океан", "icon": "🌊" },
+    { "id": "birds", "name": "Птицы", "icon": "🐦" },
+    { "id": "lullaby", "name": "Колыбельные", "icon": "🌙" }
+  ]
+}
