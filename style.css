@@ -183,6 +183,8 @@ header {
 }
 
 .category {
+  position: relative; /* Обязательно */
+  z-index: 11;
   white-space: nowrap;
   padding: 0.6rem 1.25rem;
   background-color: var(--card-background);
@@ -844,4 +846,171 @@ header {
 /* Utility class (можно удалить, если не используется явно в JS) */
 .hidden {
   display: none;
+}
+
+/* --- Стили для баннера установки PWA --- */
+.install-prompt {
+  display: none; /* Скрыт по умолчанию */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(40, 40, 42, 0.9); /* Темный полупрозрачный фон */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  padding: 1rem;
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom)); /* Учет нижнего отступа на iOS */
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.2);
+  z-index: 2000; /* Поверх всего, включая плеер */
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  font-size: 0.9rem;
+  display: flex; /* Используем flex для выравнивания */
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.install-prompt.show {
+  display: flex; /* Показываем при добавлении класса */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.install-prompt-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-grow: 1; /* Занимает доступное пространство */
+  min-width: 0; /* Предотвращает выталкивание кнопок */
+}
+
+.install-prompt-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px; /* Слегка скругленные углы для иконки */
+  flex-shrink: 0;
+}
+
+.install-prompt-text {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.install-prompt-text p {
+  margin: 0 0 0.3rem 0;
+  font-weight: 500;
+  white-space: normal; /* Разрешаем перенос текста */
+}
+.install-prompt-text p strong {
+    color: #eee; /* Чуть ярче название */
+}
+
+.install-prompt-text small {
+  display: none; /* Скрываем инструкцию iOS по умолчанию */
+  opacity: 0.8;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.install-instructions-ios {
+    display: none; /* Доп. правило для скрытия */
+    align-items: center; /* Для выравнивания иконок */
+    gap: 0.2em;
+}
+.install-instructions-ios.show {
+    display: inline-flex; /* Показываем как inline-flex */
+}
+
+
+.install-prompt-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0; /* Не сжимать кнопки */
+}
+
+.install-button,
+.dismiss-button {
+  border: none;
+  border-radius: var(--border-radius-md);
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.install-button {
+  background-color: var(--accent-color);
+  color: white;
+  display: none; /* Скрыта по умолчанию */
+}
+.install-button.show {
+    display: block; /* Показываем */
+}
+
+.install-button:hover {
+  background-color: #7a1cc0; /* Темнее при наведении */
+}
+.install-button:active {
+  transform: scale(0.96);
+}
+
+.dismiss-button {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+.dismiss-button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+.dismiss-button:active {
+  transform: scale(0.96);
+}
+
+/* Стили для иконок в инструкции iOS (если используются) */
+.ios-share-icon,
+.ios-add-icon {
+    display: inline-block;
+    width: 1.2em; /* Размер относительно текста */
+    height: 1.2em;
+    vertical-align: middle; /* Выровнять по тексту */
+    filter: invert(1) opacity(0.8); /* Сделать белыми и полупрозрачными */
+    margin: 0 0.1em;
+}
+
+/* Адаптация для маленьких экранов */
+@media (max-width: 600px) {
+    .install-prompt {
+        flex-direction: column; /* Элементы друг под другом */
+        align-items: stretch; /* Растянуть по ширине */
+        text-align: center;
+        padding: 0.75rem;
+         padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+    }
+    .install-prompt-content {
+        gap: 0.75rem;
+        justify-content: center; /* Центрировать контент */
+        margin-bottom: 0.75rem;
+    }
+    .install-prompt-icon {
+        width: 40px;
+        height: 40px;
+    }
+    .install-prompt-text p {
+        font-size: 0.85rem;
+    }
+    .install-prompt-text small {
+        font-size: 0.75rem;
+    }
+    .install-prompt-actions {
+        justify-content: center; /* Центрировать кнопки */
+    }
+    .install-button,
+    .dismiss-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
 }
