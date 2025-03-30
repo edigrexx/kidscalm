@@ -864,7 +864,7 @@ header {
   padding-top: calc(1rem + env(safe-area-inset-top));
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
-  z-index: 2000; /* Поверх всего, включая плеер */
+  z-index: 10000; /* Поверх всего, включая плеер */
   font-size: 0.9rem;
   justify-content: space-between;
   align-items: center;
