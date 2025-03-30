@@ -20,7 +20,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
   font-weight: 500;
-  background: url('bg.jpg') no-repeat center center fixed;
+  background: #4d046d url('bg.jpg') no-repeat center center fixed; 
   background-size: cover;
   color: var(--text-color);
   min-height: 100vh;
@@ -909,6 +909,7 @@ header {
 .install-prompt-text {
     flex-grow: 1;
     min-width: 0;
+    padding-bottom: 0.2rem; 
 }
 
 .install-prompt-text p {
@@ -928,19 +929,45 @@ header {
 }
 
 .install-instructions-ios {
-    display: none; /* Доп. правило для скрытия */
-    align-items: center; /* Для выравнивания иконок */
-    gap: 0.2em;
+  display: none; /* Скрыто по умолчанию, показывается JS */
+  align-items: center; /* Вертикальное выравнивание текста и иконок */
+  gap: 0.3em; /* Небольшой отступ между элементами */
+  opacity: 0.85; /* Чуть менее яркая инструкция */
+  font-size: 0.8rem; 
+  line-height: 1.4;
+  white-space: normal; /* Разрешаем перенос, если не влезает */
 }
 .install-instructions-ios.show {
-    display: inline-flex; /* Показываем как inline-flex */
+  display: inline-flex; /* Показываем как строку с flex-выравниванием */
+  flex-wrap: wrap; /* Разрешаем перенос на новую строку при необходимости */
+}
+
+.ios-icon {
+  display: inline-block; /* Чтобы применялись размеры и отступы */
+  font-weight: bold; /* Сделаем символы чуть жирнее */
+  font-size: 1.2em; /* Размер иконки относительно текста */
+  line-height: 1; /* Выравнивание по вертикали */
+  vertical-align: middle; /* Дополнительное выравнивание */
+  margin: 0 0.1em;
+  /* Можно добавить цвет, если нужно */
+  /* color: #fff; */ 
+}
+
+/* Опционально: стили для конкретных иконок, если нужно */
+.ios-icon.share-icon {
+ /* Дополнительные стили для иконки "Поделиться", если нужны */
+}
+.ios-icon.add-icon {
+ /* Дополнительные стили для иконки "Добавить", если нужны */
+ font-size: 1.4em; /* Плюс можно сделать чуть больше */
 }
 
 
 .install-prompt-actions {
   display: flex;
   gap: 0.75rem;
-  flex-shrink: 0; /* Не сжимать кнопки */
+  flex-shrink: 0; 
+  align-items: center; /* Выровнять кнопки по вертикали на всякий случай */
 }
 
 .install-button,
@@ -981,31 +1008,20 @@ header {
   transform: scale(0.96);
 }
 
-/* Стили для иконок в инструкции iOS (если используются) */
-.ios-share-icon,
-.ios-add-icon {
-    display: inline-block;
-    width: 1.2em; /* Размер относительно текста */
-    height: 1.2em;
-    vertical-align: middle; /* Выровнять по тексту */
-    filter: invert(1) opacity(0.8); /* Сделать белыми и полупрозрачными */
-    margin: 0 0.1em;
-}
-
 /* Адаптация для маленьких экранов */
 @media (max-width: 600px) {
     .install-prompt {
         flex-direction: column; /* Элементы друг под другом */
         align-items: stretch; /* Растянуть по ширине */
-        text-align: center;
+        text-align: left;
         padding: 0.75rem;
         padding-top: calc(0.75rem + env(safe-area-inset-top));
         /* max-height остается от основного правила или можно переопределить */
     }
     .install-prompt-content {
-        gap: 0.75rem;
-        justify-content: center; /* Центрировать контент */
-        margin-bottom: 0.75rem;
+      justify-content: flex-start; /* Выровнять иконку и текст по левому краю */
+      text-align: left;
+      margin-bottom: 0.75rem
     }
     .install-prompt-icon {
         width: 40px;
@@ -1018,7 +1034,7 @@ header {
         font-size: 0.75rem;
     }
     .install-prompt-actions {
-        justify-content: center; /* Центрировать кнопки */
+      justify-content: flex-end;
     }
     .install-button,
     .dismiss-button {
