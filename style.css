@@ -853,7 +853,7 @@ header {
   /* display: none; */ /* Убираем display: none, будем управлять через visibility */
   display: flex; /* Используем flex для выравнивания */
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
   right: 0;
   background-color: rgba(40, 40, 42, 0.9); /* Темный полупрозрачный фон */
@@ -861,9 +861,9 @@ header {
   -webkit-backdrop-filter: blur(10px);
   color: #fff;
   padding: 1rem;
-  padding-bottom: calc(1rem + env(safe-area-inset-bottom)); /* Учет нижнего отступа на iOS */
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.2);
+  padding-top: calc(1rem + env(safe-area-inset-top));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
   z-index: 2000; /* Поверх всего, включая плеер */
   font-size: 0.9rem;
   justify-content: space-between;
@@ -872,7 +872,7 @@ header {
 
   /* --- ИСПРАВЛЕНИЯ --- */
   opacity: 0;
-  transform: translateY(100%);
+  transform: translateY(-100%);
   visibility: hidden; /* <-- ДОБАВЛЕНО: Скрывает элемент и делает неинтерактивным */
   transition: opacity 0.4s ease-out, transform 0.4s ease-out, visibility 0s linear 0.4s; /* Добавляем transition для visibility с задержкой */
 
@@ -1000,7 +1000,7 @@ header {
         align-items: stretch; /* Растянуть по ширине */
         text-align: center;
         padding: 0.75rem;
-         padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+        padding-top: calc(0.75rem + env(safe-area-inset-top));
         /* max-height остается от основного правила или можно переопределить */
     }
     .install-prompt-content {
