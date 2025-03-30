@@ -850,7 +850,8 @@ header {
 
 /* --- Стили для баннера установки PWA --- */
 .install-prompt {
-  display: none; /* Скрыт по умолчанию */
+  /* display: none; */ /* Убираем display: none, будем управлять через visibility */
+  display: flex; /* Используем flex для выравнивания */
   position: fixed;
   bottom: 0;
   left: 0;
@@ -864,21 +865,32 @@ header {
   border-top: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.2);
   z-index: 2000; /* Поверх всего, включая плеер */
-  opacity: 0;
-  transform: translateY(100%);
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
   font-size: 0.9rem;
-  display: flex; /* Используем flex для выравнивания */
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+
+  /* --- ИСПРАВЛЕНИЯ --- */
+  opacity: 0;
+  transform: translateY(100%);
+  visibility: hidden; /* <-- ДОБАВЛЕНО: Скрывает элемент и делает неинтерактивным */
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out, visibility 0s linear 0.4s; /* Добавляем transition для visibility с задержкой */
+
+  /* Исправление для проблемы №1 (переполнение) */
+  max-height: 75vh; /* Ограничиваем высоту (можно подобрать значение) */
+  overflow-y: auto; /* Добавляем скролл, если контент не влезает */
+  /* --- КОНЕЦ ИСПРАВЛЕНИЙ --- */
 }
 
 .install-prompt.show {
-  display: flex; /* Показываем при добавлении класса */
+  /* display: flex; */ /* Уже установлено в базовом правиле */
   opacity: 1;
   transform: translateY(0);
+  visibility: visible; /* <-- ДОБАВЛЕНО: Делает элемент видимым и интерактивным */
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out; /* Убираем задержку для visibility при показе */
 }
+
+/* --- Остальные стили для .install-prompt-* остаются без изменений --- */
 
 .install-prompt-content {
   display: flex;
@@ -989,6 +1001,7 @@ header {
         text-align: center;
         padding: 0.75rem;
          padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+        /* max-height остается от основного правила или можно переопределить */
     }
     .install-prompt-content {
         gap: 0.75rem;
