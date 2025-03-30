@@ -393,7 +393,7 @@ function renderSounds(soundsToRender) {
                     data-file-id="${baseFileId}" aria-label="${isFav ? 'Удалить из избранного' : 'Добавить в избранное'}"></button>`;
         if (currentSound && filePath === `sounds/${currentSound.file}`) div.classList.add('active');
         div.addEventListener("click", () => {
-            forcePlayImmediately(() => playItem(sound, 'sound'));
+            playItem(sound, 'sound');
           });          
         const favButton = div.querySelector('.favorite-button');
         if (favButton) { // Добавим проверку на случай ошибки в innerHTML
@@ -422,7 +422,7 @@ function renderStories() {
                      data-file-id="${baseFileId}" aria-label="${isFav ? 'Удалить из избранного' : 'Добавить в избранное'}"></button>`;
         if (currentStory && currentStory.file === story.file) div.classList.add('active');
         div.addEventListener("click", () => {
-            forcePlayImmediately(() => playItem(story, 'story'));
+            playItem(story, 'story');
           });          
         const favButton = div.querySelector('.favorite-button');
          if (favButton) {
@@ -483,7 +483,7 @@ function renderFavorites() {
         const playingItem = currentSound || currentStory;
         if (playingItem && path === (currentSound ? `sounds/${currentSound.file}` : currentStory.file)) div.classList.add('active');
         div.addEventListener("click", () => {
-            forcePlayImmediately(() => playItem(item, item.originalType));
+            playItem(item, item.originalType);
           });
           // Передаем originalType
         const favButton = div.querySelector('.favorite-button');
