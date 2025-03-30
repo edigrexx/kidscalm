@@ -7,8 +7,12 @@
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" href="/favicon.ico">
-  </head>
+</head>
 <body>
+
+  <!-- 🔊 Основной аудиоплеер (важен для iOS) -->
+  <audio id="mainPlayer" preload="auto"></audio>
+
   <header>
     <div class="logo-container">
       <img src="logo.png" alt="KidsCalm">
@@ -17,39 +21,39 @@
     <div class="tabs">
       <button class="tab active" id="tab-sounds">🎵 Звуки</button>
       <button class="tab" id="tab-stories">📖 Сказки</button>
-      <button class="tab" id="tab-favorites">⭐ Избранное</button> </div>
-      <div id="install-prompt" class="install-prompt">
-  <div class="install-prompt-content">
-    <img src="icon-192.png" alt="KidsCalm Icon" class="install-prompt-icon">
-    <div class="install-prompt-text">
-      <p>Установите <strong>KidsCalm</strong> для быстрого доступа и офлайн-работы!</p>
-      <small id="ios-install-instructions" class="install-instructions-ios">
-        Нажмите <img src="share_icon_placeholder.svg" alt="Share" class="ios-share-icon"> (Поделиться), а затем 'На экран "Домой"' <img src="add_home_icon_placeholder.svg" alt="Add to Home Screen" class="ios-add-icon">.
-      </small>
+      <button class="tab" id="tab-favorites">⭐ Избранное</button>
     </div>
-  </div>
-  <div class="install-prompt-actions">
-    <button id="install-button" class="install-button">Установить</button>
-    <button id="dismiss-install-button" class="dismiss-button">Позже</button>
-  </div>
-</div>
+    <div id="install-prompt" class="install-prompt">
+      <div class="install-prompt-content">
+        <img src="icon-192.png" alt="KidsCalm Icon" class="install-prompt-icon">
+        <div class="install-prompt-text">
+          <p>Установите <strong>KidsCalm</strong> для быстрого доступа и офлайн-работы!</p>
+          <small id="ios-install-instructions" class="install-instructions-ios">
+            Нажмите <img src="share_icon_placeholder.svg" alt="Share" class="ios-share-icon"> (Поделиться),
+            а затем 'На экран "Домой"' <img src="add_home_icon_placeholder.svg" alt="Add to Home Screen" class="ios-add-icon">.
+          </small>
+        </div>
+      </div>
+      <div class="install-prompt-actions">
+        <button id="install-button" class="install-button">Установить</button>
+        <button id="dismiss-install-button" class="dismiss-button">Позже</button>
+      </div>
+    </div>
   </header>
 
   <div class="container">
     <div id="sound-section" class="tab-section active-section">
-      <div class="categories">
-        </div>
-      <div class="grid" id="sound-list">
-        </div>
+      <div class="categories"></div>
+      <div class="grid" id="sound-list"></div>
     </div>
     <div id="story-section" class="tab-section">
-      <div class="grid" id="story-list">
-        </div>
+      <div class="grid" id="story-list"></div>
     </div>
     <div id="favorites-section" class="tab-section">
-      <div class="grid" id="favorites-list">
-        </div>
-      <p id="no-favorites" style="text-align: center; opacity: 0.7; display: none; margin-top: 2rem;">Вы пока ничего не добавили в избранное.</p>
+      <div class="grid" id="favorites-list"></div>
+      <p id="no-favorites" style="text-align: center; opacity: 0.7; display: none; margin-top: 2rem;">
+        Вы пока ничего не добавили в избранное.
+      </p>
     </div>
   </div>
 
@@ -80,18 +84,18 @@
         <img src="next.svg" alt="Next">
       </button>
       <div class="timer-container">
-         <button class="player-button side-button" id="sleepTimerBtn" aria-label="Таймер сна" aria-haspopup="true" aria-expanded="false">
-           <img src="timer.svg" alt="Timer">
-         </button>
-         <div class="timer-menu" id="timerMenu" role="menu" aria-labelledby="sleepTimerBtn">
-           <button role="menuitem" class="timer-option" data-minutes="0">Отключить</button>
-           <button role="menuitem" class="timer-option" data-minutes="5">5 минут</button>
-           <button role="menuitem" class="timer-option" data-minutes="10">10 минут</button>
-           <button role="menuitem" class="timer-option" data-minutes="15">15 минут</button>
-           <button role="menuitem" class="timer-option" data-minutes="30">30 минут</button>
-           <button role="menuitem" class="timer-option" data-minutes="60">1 час</button>
-           <button role="menuitem" class="timer-option" data-minutes="120">2 часа</button>
-         </div>
+        <button class="player-button side-button" id="sleepTimerBtn" aria-label="Таймер сна" aria-haspopup="true" aria-expanded="false">
+          <img src="timer.svg" alt="Timer">
+        </button>
+        <div class="timer-menu" id="timerMenu" role="menu" aria-labelledby="sleepTimerBtn">
+          <button role="menuitem" class="timer-option" data-minutes="0">Отключить</button>
+          <button role="menuitem" class="timer-option" data-minutes="5">5 минут</button>
+          <button role="menuitem" class="timer-option" data-minutes="10">10 минут</button>
+          <button role="menuitem" class="timer-option" data-minutes="15">15 минут</button>
+          <button role="menuitem" class="timer-option" data-minutes="30">30 минут</button>
+          <button role="menuitem" class="timer-option" data-minutes="60">1 час</button>
+          <button role="menuitem" class="timer-option" data-minutes="120">2 часа</button>
+        </div>
       </div>
     </div>
     <div class="volume-control">
@@ -103,7 +107,6 @@
         <img src="volume-up.svg" alt="Громче">
       </div>
     </div>
-    <audio id="mainPlayer" preload="metadata"></audio>
   </div>
 
   <div class="mini-player" id="miniPlayer">
