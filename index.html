@@ -2,6 +2,10 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
+  <link rel="preload" href="play.svg" as="image" type="image/svg+xml">
+  <link rel="preload" href="pause.svg" as="image" type="image/svg+xml">
+  <link rel="preload" href="bg.jpg" as="image" type="image/jpg+xml">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>KidsCalm</title>
   <link rel="stylesheet" href="style.css">
@@ -11,7 +15,7 @@
 <body>
 
   <!-- 🔊 Основной аудиоплеер (важен для iOS) -->
-  <audio id="mainPlayer" preload="auto"></audio>
+  <audio id="mainPlayer" preload="auto" playsinline></audio>
 
   <header>
     <div class="logo-container">

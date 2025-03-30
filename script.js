@@ -392,7 +392,9 @@ function renderSounds(soundsToRender) {
             <button class="favorite-button ${isFav ? 'is-favorite' : ''}"
                     data-file-id="${baseFileId}" aria-label="${isFav ? 'Удалить из избранного' : 'Добавить в избранное'}"></button>`;
         if (currentSound && filePath === `sounds/${currentSound.file}`) div.classList.add('active');
-        div.addEventListener("click", () => playItem(sound, 'sound'));
+        div.addEventListener("click", () => {
+            forcePlayImmediately(() => playItem(sound, 'sound'));
+          });          
         const favButton = div.querySelector('.favorite-button');
         if (favButton) { // Добавим проверку на случай ошибки в innerHTML
              favButton.addEventListener('click', (e) => { e.stopPropagation(); toggleFavorite(baseFileId, 'sound', e.currentTarget); });
@@ -419,7 +421,9 @@ function renderStories() {
              <button class="favorite-button ${isFav ? 'is-favorite' : ''}"
                      data-file-id="${baseFileId}" aria-label="${isFav ? 'Удалить из избранного' : 'Добавить в избранное'}"></button>`;
         if (currentStory && currentStory.file === story.file) div.classList.add('active');
-        div.addEventListener("click", () => playItem(story, 'story'));
+        div.addEventListener("click", () => {
+            forcePlayImmediately(() => playItem(story, 'story'));
+          });          
         const favButton = div.querySelector('.favorite-button');
          if (favButton) {
             favButton.addEventListener('click', (e) => { e.stopPropagation(); toggleFavorite(baseFileId, 'story', e.currentTarget); });
@@ -478,7 +482,10 @@ function renderFavorites() {
              <button class="favorite-button is-favorite" data-file-id="${baseFileIdForButton}" aria-label="Удалить из избранного"></button>`; // Используем правильный ID для кнопки
         const playingItem = currentSound || currentStory;
         if (playingItem && path === (currentSound ? `sounds/${currentSound.file}` : currentStory.file)) div.classList.add('active');
-        div.addEventListener("click", () => playItem(item, item.originalType)); // Передаем originalType
+        div.addEventListener("click", () => {
+            forcePlayImmediately(() => playItem(item, item.originalType));
+          });
+          // Передаем originalType
         const favButton = div.querySelector('.favorite-button');
         if (favButton) {
              favButton.addEventListener('click', (e) => {
@@ -903,6 +910,22 @@ function setupEventListeners() {
      });
 
 } // Конец setupEventListeners
+
+function forcePlayImmediately(callback) {
+    const userInteracted = () => {
+        document.removeEventListener('touchstart', userInteracted);
+        document.removeEventListener('click', userInteracted);
+        callback(); // вызываем playItem только после прямого взаимодействия
+    };
+
+    if (document.readyState === 'complete') {
+        userInteracted(); // уже можно
+    } else {
+        document.addEventListener('touchstart', userInteracted, { once: true });
+        document.addEventListener('click', userInteracted, { once: true });
+    }
+}
+
 
 // ========================================================================
 // Запуск приложения
